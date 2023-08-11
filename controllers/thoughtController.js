@@ -101,5 +101,5 @@ const thoughtController = {
         .catch(err => res.json(err));
     }
 };
-
+//nice
 module.exports = thoughtController;
