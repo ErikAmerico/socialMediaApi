@@ -19,6 +19,6 @@ const reactionSchema = new mongoose.Schema({
     default: Date.now,
     get: createdAtVal => new Date(createdAtVal).toLocaleString()
   }
-});
+},{ _id: false });
 
 module.exports = reactionSchema;
