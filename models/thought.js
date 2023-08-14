@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const ReactionSchema = require('./reaction');
+const formatDate = require('../utils/date');
 
 const thoughtSchema = new mongoose.Schema({
   thoughtText: {
@@ -11,7 +12,7 @@ const thoughtSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now,
-    get: createdAtVal => new Date(createdAtVal).toLocaleString()
+    get: (createdAtVal) => formatDate(createdAtVal),
   },
   username: {
     type: String,
@@ -20,8 +21,8 @@ const thoughtSchema = new mongoose.Schema({
   reactions: [ReactionSchema]
 },
   {
-    toJSON: { virtuals: true },
-    id: false
+    toJSON: { virtuals: true, getters: true },
+    id: false,
   });
 
 thoughtSchema.virtual('reactionCount').get(function () {

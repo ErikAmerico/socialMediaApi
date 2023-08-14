@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const formatDate = require('../utils/date');
 
 const reactionSchema = new mongoose.Schema({
   reactionId: {
@@ -17,8 +18,10 @@ const reactionSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now,
-    get: createdAtVal => new Date(createdAtVal).toLocaleString()
+    get: (createdAtVal) => formatDate(createdAtVal),
   }
-},{ _id: false });
+},{ _id: false },
+
+{toJSON: {getters: true}});
 
 module.exports = reactionSchema;
