@@ -20,8 +20,9 @@ const reactionSchema = new mongoose.Schema({
     default: Date.now,
     get: (createdAtVal) => formatDate(createdAtVal),
   }
-},{ _id: false },
-
-{toJSON: {getters: true}});
+},{ 
+  _id: false,
+  toJSON: { getters: true }
+});
 
 module.exports = reactionSchema;
