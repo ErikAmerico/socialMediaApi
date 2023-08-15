@@ -10,15 +10,21 @@ const userController = {
             .populate({
                 path: 'friends',
                 select: 'username'
-            }) 
+            })
             .select('-__v')
             .sort({ _id: -1 })
-            .then(dbUserData => res.json(dbUserData))
+            .then(dbUserData => {
+                const usersWithFriendCount = dbUserData.map(user => ({
+                    ...user.toObject(),
+                    friendCount: user.friends.length
+                }));
+    
+                res.json(usersWithFriendCount);
+            })
             .catch(err => {
                 console.log(err);
                 res.sendStatus(400);
-            }
-        );
+            });
     },
 
     getUserById({ params }, res) {
@@ -29,16 +35,28 @@ const userController = {
             })
             .populate({
                 path: 'friends',
-                select: '-__v'
+                select: 'username'
             })
             .select('-__v')
-            .then(dbUserData => res.json(dbUserData))
+            .then(dbUserData => {
+                if (!dbUserData) {
+                    res.status(404).json({ message: 'No user found with this ID!' });
+                    return;
+                }
+    
+                const userWithFriendCount = {
+                    ...dbUserData.toObject(),
+                    friendCount: dbUserData.friends.length
+                };
+    
+                res.json(userWithFriendCount);
+            })
             .catch(err => {
                 console.log(err);
                 res.sendStatus(400);
-            }
-        );
+            });
     },
+    
 
     createUser({ body }, res) {
         User.create(body)
